@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -15,10 +15,29 @@ import ListItem from './components/ListItem';
 
 const App = () => {
 
+  const [isOpen, setIsOpen] = useState(false)
+
+  function onOpen() {
+    setIsOpen(!isOpen)
+  }
+
+  useEffect(() => {
+    console.log(isOpen)
+  }, [isOpen])
+
   return (
     <SafeAreaView style={styles.container} >
-      <Intro />
-      <ListItem item={{ itemId: 5, title: 'Acordar' }} />
+      {isOpen === true ? null :
+        <Intro onOpen={onOpen} />
+      }
+
+      {
+        isOpen === true ?
+          <ListItem item={{ itemId: 5, title: 'Acordar' }} />
+          :
+          null
+      }
+
     </SafeAreaView>
   );
 };
