@@ -11,36 +11,35 @@ export default function ListHeader(props) {
 
     const [item, setItem] = useState({ id: 0, title: '' })
 
+    function onPress() {
+        props.onPress(item)
+    }
+
     useEffect(() => {
         if (props.item) {
             setItem(props.item)
         }
-        console.log('adasd', props.item)
+        console.log('ListHeader', props.item)
 
     }, [props])
 
     return (
-        <View >
-            <Text style={{ backgroundColor: 'blue' }}>{item.title}</Text>
+        <View style={style.header}>
+            <Text style={style.headerText} onPress={onPress}>{item.title}</Text>
         </View>
     );
 }
 
 const style = StyleSheet.create({
-    itemContainer: {
-        padding: 5,
-        paddingLeft: 15,
+    header: {
+        backgroundColor: colors.blue
     },
 
-    itemTitle: {
-
-    },
-
-    removeButton: {
-        padding: 7,
-        backgroundColor: colors.red,
+    headerText: {
         color: colors.white,
-        textAlign: 'center'
+        padding: 10,
+        fontWeight: 'bold',
+        fontSize: 16
     },
 
 })

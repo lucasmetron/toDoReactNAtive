@@ -5420,6 +5420,11 @@ react-native-codegen@^0.0.7:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
+react-native-dialog@^9.2.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-dialog/-/react-native-dialog-9.2.0.tgz#16a8221140895daad996fd0e39132e1a24b00ab8"
+  integrity sha512-VXdfo+bAi9ER7+w4aKOWypw8K97C2orvnfnxX4Lup/U8iQB/635V00hgfHEE3s0XScQHftXxm34Fa4iIIjojQA==
+
 react-native-linear-gradient@^2.5.6:
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"

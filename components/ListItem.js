@@ -15,7 +15,7 @@ export default function ListItem(props) {
         if (props.item) {
             setItem(props.item)
         }
-        console.log('adasd', props.item)
+        console.log('List Item', props.item)
 
     }, [props])
 
@@ -33,10 +33,13 @@ const style = StyleSheet.create({
     itemContainer: {
         padding: 5,
         paddingLeft: 15,
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
     },
 
     itemTitle: {
-
+        flex: 1,
     },
 
     removeButton: {
