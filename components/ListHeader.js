@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 import { colors } from '../styles/Styles'
 
-export default function ListItem(props) {
+export default function ListHeader(props) {
 
-    const [item, setItem] = useState({ timeId: 0, title: '' })
+    const [item, setItem] = useState({ id: 0, title: '' })
 
     useEffect(() => {
         if (props.item) {
@@ -20,11 +20,8 @@ export default function ListItem(props) {
     }, [props])
 
     return (
-        <View style={[style.itemContainer]}>
-            <Text style={[style.itemTitle]}>{item.title}</Text>
-            <TouchableHighlight>
-                <Text style={[style.removeButton]}>X</Text>
-            </TouchableHighlight>
+        <View >
+            <Text style={{ backgroundColor: 'blue' }}>{item.title}</Text>
         </View>
     );
 }
