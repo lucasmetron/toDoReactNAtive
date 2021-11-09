@@ -3,29 +3,47 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableHighlight
+    TouchableHighlight,
+    Animated,
+    Easing,
 } from 'react-native';
 import { colors } from '../styles/Styles'
 
 export default function ListItem(props) {
 
-    const [item, setItem] = useState({ timeId: 0, title: '' })
+    const [item, setItem] = useState({ timeId: 0, title: '' });
+    let left = new Animated.Value(0);
+    let opacity = new Animated.Value(1);
 
     useEffect(() => {
         if (props.item) {
             setItem(props.item)
         }
-        console.log('List Item', props.item)
-
     }, [props])
 
+    function remove() {
+        Animated.timing(left, {
+            toValue: 300,
+            duration: 1000,
+            easing: Easing.back(1),
+        }).start()
+        Animated.timing(opacity, {
+            toValue: 0,
+            duration: 1200
+        }).start(() => {
+            props.onRemove(item)
+        })
+    }
+
     return (
-        <View style={[style.itemContainer]}>
+        <Animated.View style={[style.itemContainer, { left: left, opacity: opacity }]}>
             <Text style={[style.itemTitle]}>{item.title}</Text>
-            <TouchableHighlight>
+            <TouchableHighlight
+                onPress={remove}
+            >
                 <Text style={[style.removeButton]}>X</Text>
             </TouchableHighlight>
-        </View>
+        </Animated.View>
     );
 }
 

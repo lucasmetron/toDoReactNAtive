@@ -54,13 +54,44 @@ const App = () => {
   }
 
   function onNewItem(itemTitle) {
+    const newSelectedHour = selectedHour
+    const newItem = { timeId: selectedHour.id, title: itemTitle }
 
+    const newItems = items.map(item => {
+      if (newSelectedHour.id === item.id) {
+        item.data = [...item.data, newItem]
+      }
+      return item
+    })
+
+    setItems(newItems)
+
+  }
+
+  function onRemove(itemToRemove) {
+    const newItems = items.map(item => {
+      if (itemToRemove.timeId === item.id) {
+        item.data = item.data.filter(item => item.title !== itemToRemove.title)
+      }
+      return item
+    })
+
+    setItems(newItems)
   }
 
   async function selectHour(selectedHour) {
     await setSelectedHour(selectedHour)
-    setDialogOpen(true)
+    await setDialogOpen(true)
   }
+
+  const closeModal = () => {
+    setDialogOpen(false)
+  }
+
+  useEffect(() => {
+    console.log(selectedHour)
+    console.log('app', dialogOpen)
+  }, [selectedHour])
 
 
   return (
@@ -77,7 +108,7 @@ const App = () => {
           keyExtractor={(item) => item.title}
           stickySectionHeadersEnabled={true}
           renderSectionHeader={({ section }) => <ListHeader onPress={selectHour} item={section} />}
-          renderItem={({ item }) => <ListItem item={item} />}
+          renderItem={({ item }) => <ListItem item={item} onRemove={onRemove} />}
         />
 
 
@@ -85,7 +116,7 @@ const App = () => {
         null
       }
 
-      <NewItemDialog dialogOpen={dialogOpen} ref={newItemDialog} onNewItem={onNewItem} selectedHour={selectedHour} />
+      <NewItemDialog closeModal={closeModal} dialogOpen={dialogOpen} dialogOpen={dialogOpen} ref={newItemDialog} onNewItem={onNewItem} selectedHour={selectedHour} />
 
     </SafeAreaView>
   );

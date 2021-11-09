@@ -4,66 +4,81 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableHighlight
+    TouchableHighlight,
+    Animated,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 export default function Intro(props) {
 
-    let [top, setTop] = useState(0)
-    let [timeTop, setTimeTop] = useState(1)
+    // let [top, setTop] = useState(0)
+    // let [timeTop, setTimeTop] = useState(1)
+    const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient)
+    const AnimatedTouchableHighlight = Animated.createAnimatedComponent(TouchableHighlight)
+    let top = new Animated.Value(0)
+    let timeTop = new Animated.Value(0)
 
     useEffect(() => {
         timeStart()
     }, [])
 
     function timeStart() {
-        if (timeTop <= 10) {
-            setTimeTop(timeTop++)
-            setTimeout(() => {
-                timeStart()
-            }, 100)
-        }
+        timeTop.setValue(0);
+        Animated.timing(timeTop, {
+            toValue: 1,
+            duration: 2000
+        }).start();
+
     }
 
     function open() {
-        if (top <= 10) {
-            setTop(top++)
-            setTimeout(() => {
-                open()
-            }, 100)
-        } else {
-            props.onOpen()
-        }
+        top.setValue(0);
+        Animated.timing(top, {
+            toValue: 1,
+            duration: 1000
+        }).start(props.onOpen); //executa a função onOpen após finalizar a animação
     }
 
     function containerStyle() {
         return {
             transform: [
-                { translateY: -45 * top },
-                { rotateX: `${8.9 * top}deg` }
+                {
+                    translateY: top.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, -450]
+                    })
+                },
+                {
+                    rotateX: top.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: ['0deg', '89deg']
+                    })
+                }
             ]
         }
     }
 
     function timeStyle() {
         return {
-            top: `${timeTop * 4}%`
+            top: timeTop.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['0%', '40%']
+            })
         }
     }
 
     return (
-        <LinearGradient
+        <AnimatedLinearGradient
             colors={['#146fa0', '#71c5df']}
             style={[styles.container, containerStyle()]}
         >
-            <TouchableHighlight
+            <AnimatedTouchableHighlight
                 style={[styles.timeContainer, timeStyle()]}
                 onPress={open}
             >
                 <Text style={[styles.time]} >09:41</Text>
-            </TouchableHighlight>
-        </LinearGradient>
+            </AnimatedTouchableHighlight>
+        </AnimatedLinearGradient>
     );
 }
 

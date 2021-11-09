@@ -19,8 +19,6 @@ export default function ListHeader(props) {
         if (props.item) {
             setItem(props.item)
         }
-        console.log('ListHeader', props.item)
-
     }, [props])
 
     return (
