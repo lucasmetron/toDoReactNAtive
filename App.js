@@ -111,7 +111,6 @@ const App = () => {
           renderItem={({ item }) => <ListItem item={item} onRemove={onRemove} />}
         />
 
-
         :
         null
       }
