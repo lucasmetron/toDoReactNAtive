@@ -22,15 +22,17 @@ export default function ListItem(props) {
     }, [props])
 
     function remove() {
-        Animated.timing(left, {
-            toValue: 300,
-            duration: 1000,
-            easing: Easing.back(1),
-        }).start()
-        Animated.timing(opacity, {
-            toValue: 0,
-            duration: 1200
-        }).start(() => {
+        Animated.parallel([
+            Animated.timing(left, {
+                toValue: 300,
+                duration: 1000,
+                easing: Easing.back(1),
+            }),
+            Animated.timing(opacity, {
+                toValue: 0,
+                duration: 1200
+            })
+        ]).start(() => {
             props.onRemove(item)
         })
     }
