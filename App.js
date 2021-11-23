@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
-  FlatList,
   SafeAreaView,
-  ScrollView,
   SectionList,
-  StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+  Animated
 } from 'react-native';
 
 import Intro from './components/Intro';
 import ListItem from './components/ListItem';
 import ListHeader from './components/ListHeader';
 import NewItemDialog from './components/NewItemDialog';
+import DayView from './components/DayView';
 
 const App = () => {
 
@@ -48,6 +44,10 @@ const App = () => {
   ])
   const [selectedHour, setSelectedHour] = useState('00:00');
   const newItemDialog = React.createRef();
+  let scrollY = new Animated.Value(1000)
+
+  const MyAnimatedSectionList = Animated.createAnimatedComponent(SectionList)
+  let positionSectionList = new Animated.Value(0);
 
   function onOpen() {
     setIsOpen(!isOpen)
@@ -84,34 +84,49 @@ const App = () => {
     await setDialogOpen(true)
   }
 
-  const closeModal = () => {
+  function closeModal() {
     setDialogOpen(false)
   }
+
+  let handleScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }])
+
 
   useEffect(() => {
     console.log(selectedHour)
     console.log('app', dialogOpen)
   }, [selectedHour])
 
+  useEffect(() => {
+
+    Animated.spring(positionSectionList, {
+      toValue: 0,
+      friction: 2
+    }).start()
+
+  }, [isOpen])
 
   return (
     <SafeAreaView style={styles.container} >
-      {isOpen === true ? null :
 
+      {isOpen === true ?
+        null
+        :
         <Intro onOpen={onOpen} />
-
       }
 
       {isOpen === true ?
-        <SectionList
-          sections={items}
-          keyExtractor={(item) => item.title}
-          stickySectionHeadersEnabled={true}
-          renderSectionHeader={({ section }) => <ListHeader onPress={selectHour} item={section} />}
-          renderItem={({ item }) => <ListItem item={item} onRemove={onRemove} />}
-        />
-
-
+        <>
+          {/* <DayView onOpen={onOpen} scrollY={scrollY} /> */}
+          <MyAnimatedSectionList
+            sections={items}
+            keyExtractor={(item) => item.title}
+            stickySectionHeadersEnabled={true}
+            renderSectionHeader={({ section }) => <ListHeader onPress={selectHour} item={section} />}
+            renderItem={({ item }) => <ListItem item={item} onRemove={onRemove} />}
+            onScroll={handleScroll}
+            style={{ width: '100%', position: 'absolute', top: positionSectionList }}
+          />
+        </>
         :
         null
       }
